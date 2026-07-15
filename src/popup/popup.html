@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Email Extractor Pro</title>
+  <script type="module" crossorigin src="/assets/popup-DBh1qDU_.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/utils-DAfIIjoG.js">
+  <link rel="stylesheet" crossorigin href="/assets/popup.css">
+</head>
+<body>
+
+<!-- ============================================
+     STATE: LOADING
+     ============================================ -->
+<div id="stateLoading" class="app-state active">
+  <div class="loading-screen">
+    <div class="logo-mark">
+      <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="40" height="40" rx="10" fill="url(#grad)"/>
+        <path d="M8 14L20 22L32 14" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+        <rect x="8" y="12" width="24" height="18" rx="3" stroke="white" stroke-width="2"/>
+        <defs>
+          <linearGradient id="grad" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#6366f1"/>
+            <stop offset="1" stop-color="#8b5cf6"/>
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+    <div class="spinner"></div>
+  </div>
+</div>
+
+<!-- ============================================
+     STATE: LOGIN
+     ============================================ -->
+<div id="stateLogin" class="app-state">
+  <div class="auth-header">
+    <div class="brand">
+      <div class="brand-icon">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="24" height="24" rx="6" fill="url(#brandGrad)"/>
+          <path d="M4 8l8 6 8-6" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+          <rect x="4" y="6" width="16" height="12" rx="2" stroke="white" stroke-width="1.5"/>
+          <defs>
+            <linearGradient id="brandGrad" x1="0" y1="0" x2="24" y2="24">
+              <stop stop-color="#6366f1"/><stop offset="1" stop-color="#8b5cf6"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+      <div>
+        <h1 class="brand-name">Email Extractor Pro</h1>
+        <p class="brand-sub">Professional email intelligence</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="auth-body">
+    <h2 class="form-title">Sign in</h2>
+
+    <div id="loginError" class="alert alert-error hidden"></div>
+
+    <div class="field">
+      <label class="field-label" for="loginEmail">Work email</label>
+      <input type="email" id="loginEmail" class="field-input" placeholder="you@company.com" autocomplete="email" />
+    </div>
+
+    <div class="field">
+      <label class="field-label" for="loginPassword">Password</label>
+      <input type="password" id="loginPassword" class="field-input" placeholder="••••••••••" autocomplete="current-password" />
+    </div>
+
+    <button id="btnLogin" class="btn btn-primary btn-full">
+      <span>Sign in</span>
+      <div class="btn-spinner hidden"></div>
+    </button>
+
+    <div class="auth-links">
+      <button class="link-btn" id="goToForgot">Forgot password?</button>
+      <span class="divider-dot">·</span>
+      <button class="link-btn" id="goToRegister">Create account</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================
+     STATE: REGISTER
+     ============================================ -->
+<div id="stateRegister" class="app-state">
+  <div class="auth-header compact">
+    <button class="back-btn" id="backToLogin">← Back</button>
+    <h2 class="form-title">Create account</h2>
+  </div>
+  <div class="auth-body scroll">
+    <div id="registerError" class="alert alert-error hidden"></div>
+    <div id="registerSuccess" class="alert alert-success hidden"></div>
+
+    <div class="field">
+      <label class="field-label" for="regName">Full name</label>
+      <input type="text" id="regName" class="field-input" placeholder="Jane Smith" />
+    </div>
+    <div class="field">
+      <label class="field-label" for="regEmail">Work email</label>
+      <input type="email" id="regEmail" class="field-input" placeholder="you@company.com" />
+    </div>
+    <div class="field">
+      <label class="field-label" for="regCompany">Company / Organization</label>
+      <input type="text" id="regCompany" class="field-input" placeholder="Acme Corp" />
+    </div>
+    <div class="field">
+      <label class="field-label" for="regUse">How will you use this tool?</label>
+      <textarea id="regUse" class="field-input field-textarea" placeholder="Lead generation for B2B sales outreach..."></textarea>
+    </div>
+    <div class="field">
+      <label class="field-label" for="regPassword">Password</label>
+      <input type="password" id="regPassword" class="field-input" placeholder="Min 10 chars with upper, number, symbol" />
+    </div>
+    <div class="field">
+      <label class="field-label" for="regConfirmPassword">Confirm password</label>
+      <input type="password" id="regConfirmPassword" class="field-input" placeholder="••••••••••" />
+    </div>
+    <div class="field field-checkbox">
+      <input type="checkbox" id="regTerms" />
+      <label for="regTerms">I accept the <span class="link-text">Terms of Use</span> and <span class="link-text">Privacy Policy</span></label>
+    </div>
+
+    <button id="btnRegister" class="btn btn-primary btn-full">
+      <span>Create account</span>
+      <div class="btn-spinner hidden"></div>
+    </button>
+  </div>
+</div>
+
+<!-- ============================================
+     STATE: VERIFY EMAIL
+     ============================================ -->
+<div id="stateVerifyEmail" class="app-state">
+  <div class="centered-state">
+    <div class="state-icon state-icon-pending">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M3 8l9 7 9-7M3 8h18v11a1 1 0 01-1 1H4a1 1 0 01-1-1V8z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+    </div>
+    <h2>Check your email</h2>
+    <p class="state-desc">We sent a verification link to <strong id="verifyEmailAddress"></strong>.</p>
+    <p class="state-hint">Click the link in the email to verify your address, then return here and click Continue.</p>
+    <button id="btnCheckVerification" class="btn btn-primary">I verified my email</button>
+    <button id="btnResendVerification" class="btn btn-ghost">Resend verification email</button>
+    <button class="link-btn mt-8" id="backFromVerify">← Sign in with different account</button>
+  </div>
+</div>
+
+<!-- ============================================
+     STATE: PENDING APPROVAL
+     ============================================ -->
+<div id="statePending" class="app-state">
+  <div class="centered-state">
+    <div class="state-icon state-icon-waiting">
+      <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5"/><path d="M12 7v5l3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </div>
+    <h2>Awaiting approval</h2>
+    <p class="state-desc">Your email has been verified. Your account is currently under review by our team.</p>
+    <p class="state-hint">You'll receive an email once your account has been approved.</p>
+    <button class="link-btn mt-8" id="logoutFromPending">Sign out</button>
+  </div>
+</div>
+
+<!-- ============================================
+     STATE: REJECTED / SUSPENDED / BLOCKED
+     ============================================ -->
+<div id="stateRejected" class="app-state">
+  <div class="centered-state">
+    <div class="state-icon state-icon-error">
+      <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5"/><path d="M12 8v4M12 16h.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </div>
+    <h2 id="rejectedTitle">Account not active</h2>
+    <p class="state-desc" id="rejectedMessage">Your account is not currently active. Please contact support for assistance.</p>
+    <button class="link-btn mt-8" id="logoutFromRejected">Sign out</button>
+  </div>
+</div>
+
+<!-- ============================================
+     STATE: EXPIRED SUBSCRIPTION
+     ============================================ -->
+<div id="stateExpired" class="app-state">
+  <div class="centered-state">
+    <div class="state-icon state-icon-warning">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M12 2L2 20h20L12 2z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M12 9v4M12 17h.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </div>
+    <h2>Subscription expired</h2>
+    <p class="state-desc">Your subscription has expired. Please contact the administrator to renew your access.</p>
+    <button class="link-btn mt-8" id="logoutFromExpired">Sign out</button>
+  </div>
+</div>
+
+<!-- ============================================
+     STATE: ACTIVE EXTENSION
+     ============================================ -->
+<div id="stateActive" class="app-state">
+
+  <!-- Header -->
+  <div class="ext-header">
+    <div class="ext-brand">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+        <rect width="24" height="24" rx="6" fill="url(#hGrad)"/>
+        <path d="M4 8l8 6 8-6" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+        <rect x="4" y="6" width="16" height="12" rx="2" stroke="white" stroke-width="1.5"/>
+        <defs><linearGradient id="hGrad" x1="0" y1="0" x2="24" y2="24"><stop stop-color="#6366f1"/><stop offset="1" stop-color="#8b5cf6"/></linearGradient></defs>
+      </svg>
+      <span class="ext-brand-name">Email Extractor Pro</span>
+    </div>
+    <div class="ext-header-right">
+      <span class="plan-badge" id="planBadge">Trial</span>
+      <button class="icon-btn" id="btnLogout" title="Sign out">
+        <svg viewBox="0 0 20 20" fill="none"><path d="M13 7l3 3m0 0l-3 3m3-3H7m6-7H5a2 2 0 00-2 2v12a2 2 0 002 2h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Usage bar -->
+  <div class="usage-row">
+    <div class="usage-stat">
+      <span class="usage-num" id="emailsUsed">0</span>
+      <span class="usage-sep">/</span>
+      <span class="usage-lim" id="emailsLimit">2,000</span>
+      <span class="usage-label">emails</span>
+    </div>
+    <div class="usage-divider"></div>
+    <div class="usage-stat">
+      <span class="usage-num" id="downloadsUsed">0</span>
+      <span class="usage-sep">/</span>
+      <span class="usage-lim" id="downloadsLimit">5</span>
+      <span class="usage-label">downloads</span>
+    </div>
+    <div class="usage-expiry" id="usageExpiry"></div>
+  </div>
+
+  <!-- Collection selector -->
+  <div class="section collection-section">
+    <div class="collection-row">
+      <div class="field-compact">
+        <label class="field-label-sm">Collection</label>
+        <select id="collectionSelect" class="field-select"></select>
+      </div>
+      <button class="icon-btn icon-btn-sm" id="btnNewCollection" title="New collection">
+        <svg viewBox="0 0 20 20" fill="none"><path d="M10 4v12M4 10h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div id="collectionStats" class="collection-stats hidden">
+      <span id="collEmailCount" class="stat-pill">0 emails</span>
+      <span id="collCheckpointBadge" class="stat-pill stat-pill-green hidden">✓ <span id="collCheckpointVal">0</span> verified</span>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Extract section -->
+  <div class="section">
+    <button id="btnExtract" class="btn btn-primary btn-full">
+      <svg viewBox="0 0 20 20" fill="none" width="16" height="16"><circle cx="8" cy="8" r="5" stroke="currentColor" stroke-width="1.5"/><path d="M13 13l3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <span>Extract from this page</span>
+    </button>
+  </div>
+
+  <!-- Status bar -->
+  <div id="statusBar" class="status-bar hidden">
+    <span id="statusText"></span>
+  </div>
+
+  <!-- Results section -->
+  <div id="resultsSection" class="section hidden">
+    <div class="section-header">
+      <span class="section-title">Found on this page</span>
+      <span id="countBadge" class="badge">0</span>
+    </div>
+    <div id="emailList" class="email-list"></div>
+    <div class="btn-row">
+      <button id="btnCopyAll" class="btn btn-sm btn-secondary">
+        <svg viewBox="0 0 16 16" fill="none" width="13" height="13"><rect x="4" y="4" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M3 10V3h7" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+        Copy all
+      </button>
+      <button id="btnAddToCollection" class="btn btn-sm btn-success">
+        <svg viewBox="0 0 16 16" fill="none" width="13" height="13"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Add to Collection
+      </button>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Collection view -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-title">Collection</span>
+      <div class="section-header-actions">
+        <button id="btnToggleCollection" class="toggle-btn">Show</button>
+      </div>
+    </div>
+
+    <!-- Download / clear actions -->
+    <div class="btn-row">
+      <button id="btnDownloadCsv" class="btn btn-primary flex-1">
+        <svg viewBox="0 0 16 16" fill="none" width="13" height="13"><path d="M8 3v7m0 0l-3-3m3 3l3-3" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 13h10" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Download CSV
+      </button>
+      <button id="btnClearCollection" class="btn btn-ghost-danger">
+        <svg viewBox="0 0 16 16" fill="none" width="13" height="13"><path d="M3 5h10l-1 8H4L3 5z" stroke="currentColor" stroke-width="1.2"/><path d="M6 7v4M10 7v4M1 5h14M6 5V3h4v2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+
+    <!-- Expanded collection list -->
+    <div id="collectionList" class="collection-list hidden"></div>
+  </div>
+
+  <!-- Download status -->
+  <div id="downloadStatus" class="download-status hidden">
+    <div class="download-status-inner">
+      <div class="download-icon" id="downloadIcon">⬇</div>
+      <div>
+        <div class="download-status-text" id="downloadStatusText">Preparing Download</div>
+        <div class="download-status-sub" id="downloadStatusSub"></div>
+      </div>
+      <button id="btnRetryDownload" class="btn btn-sm btn-secondary hidden">Retry</button>
+    </div>
+    <div class="download-progress" id="downloadProgress">
+      <div class="download-progress-bar" id="downloadProgressBar"></div>
+    </div>
+  </div>
+
+</div><!-- /stateActive -->
+
+<!-- ============================================
+     STATE: FORGOT PASSWORD
+     ============================================ -->
+<div id="stateForgot" class="app-state">
+  <div class="auth-header compact">
+    <button class="back-btn" id="backFromForgot">← Back</button>
+    <h2 class="form-title">Reset password</h2>
+  </div>
+  <div class="auth-body">
+    <p class="text-sm text-muted">Enter your work email address and we'll send you a reset link.</p>
+    <div id="forgotMsg" class="alert hidden"></div>
+    <div class="field">
+      <label class="field-label" for="forgotEmail">Work email</label>
+      <input type="email" id="forgotEmail" class="field-input" placeholder="you@company.com" />
+    </div>
+    <button id="btnForgot" class="btn btn-primary btn-full">Send reset link</button>
+  </div>
+</div>
+
+<!-- ============================================
+     MODAL: New Collection
+     ============================================ -->
+<div id="modalNewCollection" class="modal-overlay hidden">
+  <div class="modal">
+    <h3 class="modal-title">New collection</h3>
+    <div class="field">
+      <label class="field-label" for="newCollectionName">Collection name</label>
+      <input type="text" id="newCollectionName" class="field-input" placeholder="e.g. Etsy sellers July 2026" maxlength="100" />
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" id="btnCancelCollection">Cancel</button>
+      <button class="btn btn-primary" id="btnCreateCollection">Create</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================
+     MODAL: Legacy migration
+     ============================================ -->
+<div id="modalMigrate" class="modal-overlay hidden">
+  <div class="modal">
+    <h3 class="modal-title">Import existing collection</h3>
+    <p class="text-sm">We found <strong id="legacyCount">0</strong> saved emails from a previous version of this extension. Would you like to import them?</p>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" id="btnSkipMigrate">Skip for now</button>
+      <button class="btn btn-primary" id="btnDoMigrate">Import collection</button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
